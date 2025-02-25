@@ -1,14 +1,16 @@
 package main
 
-import ("fmt")
+import (
+	"time"
 
-func main(){
-	
-	
+	"github.com/lasantos2/pokedex/internal/pokeapi"
+)
 
-	return 
-}
+func main() {
+	pokeClient := pokeapi.NewClient(5 * time.Second)
+	cfg := &config{
+		pokeapiClient: pokeClient,
+	}
 
-func cleanInput(text string) []string {
-	return []string{}
+	startRepl(cfg)
 }
