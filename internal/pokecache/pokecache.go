@@ -45,5 +45,20 @@ func (_cache *Cache) Get(key string) ([]byte, bool) {
 
 
 func (_cache *Cache) reapLoop(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	for range ticker.C {
+		_cache.reap(time.Now().UTC(), interval)
+	}
 
+}
+
+func (_cache *Cache) reap(now time.Time, last time.Duration) {
+
+	_cache.mux.Lock()
+	defer _cache.mux.Unlock()
+	for k, v := range _cache.cache {
+		if v.createdAt.Before(now.Add(-last)) {
+			delete(_cache.cache, k)
+		}
+	}
 }
