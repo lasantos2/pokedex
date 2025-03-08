@@ -12,13 +12,13 @@ type Cache struct {
 
 type cacheEntry struct {
 	createdAt time.Time
-	val []bye
+	val []byte
 }
 
 func NewCache(interval time.Duration) Cache {
 	_cache := Cache{
 		cache:make(map[string]cacheEntry),
-		mux: &sync.Mutex{}
+		mux: &sync.Mutex{},
 	}
 
 	// call reaploop in new job
@@ -30,7 +30,7 @@ func NewCache(interval time.Duration) Cache {
 func (_cache *Cache) Add(key string, value []byte) {
 	_cache.mux.Lock()
 	defer _cache.mux.Unlock()
-	_cache.cache[key] = CacheEntry{
+	_cache.cache[key] = cacheEntry{
 		createdAt: time.Now().UTC(),
 		val: value,
 	}
