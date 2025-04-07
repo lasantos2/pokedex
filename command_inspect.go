@@ -5,28 +5,6 @@ import (
 	"fmt"
 )
 
-/*
-Stats []struct {
-		BaseStat int `json:"base_stat"`
-		Effort   int `json:"effort"`
-		Stat     struct {
-			Name string `json:"name"`
-			URL  string `json:"url"`
-		} `json:"stat"`
-	} `json:"stats"`
-
-
-Types []struct {
-		Slot int `json:"slot"`
-		Type struct {
-			Name string `json:"name"`
-			URL  string `json:"url"`
-		} `json:"type"`
-	} `json:"types"`
-
-
-*/
-
 //fetch information from pokedex and display some information
 func commandInspect(cfg *config, args ...string) error {
 	if len(args) != 1 {
@@ -35,12 +13,11 @@ func commandInspect(cfg *config, args ...string) error {
 
 	name := args[0]
 
-	pokeInfo := cfg.caughtPokemon[name]
+	pokeInfo, ok := cfg.caughtPokemon[name]
 
-	// if pokeInfo == nil {
-	// 	fmt.Println("%s has not been caught", name)
-	// 	return nil, errors.NewError("%s has not been caught", name)
-	// }
+	if !ok {
+		return errors.New(name, " not caught been caught!")
+	}
 
 	fmt.Println("Name: " + pokeInfo.Name)
 	fmt.Println("Height:", pokeInfo.Height)
@@ -55,11 +32,6 @@ func commandInspect(cfg *config, args ...string) error {
 	for _, val := range pokeInfo.Types {
 		fmt.Printf(" -%s\n", val.Type.Name)
 	}
-
-
-
-	//fmt.Println("Types: " + pokeInfo.Types)
-
 
 	return nil
 
